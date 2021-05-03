@@ -1,3 +1,20 @@
+input {
+  width: 50%;
+  padding: 10px;
+}
+
+.link {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.button {
+  padding: 10px;
+  margin: 5px;
+}
+
 .App {
   text-align: center;
 }
