@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-const axios = require('axios').default;
-
 
 function Signup() {
+
+    const [isSignedUp, setIsSignedUp] = useState(false);
 
     const [data, setData] = useState({
         username: '',
@@ -23,11 +23,27 @@ function Signup() {
         });
     }
 
-    const signup = (event) => {
+    const signup = async (event) => {
         event.preventDefault();
-        console.log(data)
 
-        axios.post()
+        fetch('http://localhost:5000/signup', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
+            .then(function (response) {
+                console.log(response.status)
+                if (response.status === 200) {
+                    setIsSignedUp(true)
+                }
+            })
+
+        console.log(JSON.stringify(data))
+        console.log(isSignedUp)
+
     }
 
     return (
@@ -52,8 +68,9 @@ function Signup() {
                 <input onChange={handleChange} type="number" name="mobile" placeholder="Mobile" />
                 <br />
                 <br />
-                <input type="submit" />
+                <input class="submit-button" type="submit" />
             </form>
+            {isSignedUp ? <h1>successfully signed up</h1> : <h1>Username or email alredy exits</h1>}
         </div>
     )
 }

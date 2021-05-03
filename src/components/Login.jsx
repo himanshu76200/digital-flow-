@@ -3,6 +3,8 @@ const axios = require('axios').default;
 
 function Login() {
 
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
     const [data, setData] = useState({
         email: '',
         password: ''
@@ -22,11 +24,24 @@ function Login() {
         event.preventDefault();
         console.log(data);
 
-        const url = "http://localhost:5000/login";
+        fetch('http://localhost:5000/login', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
+            .then(function (response) {
+                console.log(response.status)
+                if (response.status === 200) {
+                    setIsLoggedIn(true)
+                } else {
+                    setIsLoggedIn(false)
+                }
+            })
 
-        axios.post(url, data)
-            .then(res => console.log(res))
-            .catch(err => console.log(err));
+
     }
 
     return (
@@ -39,8 +54,9 @@ function Login() {
                 <input onChange={handleChange} type="text" name="password" placeholder="password" />
                 <br />
                 <br />
-                <input type="submit" />
+                <input class="submit-button" type="submit" />
             </form>
+            {isLoggedIn ? <h1>successfully LoggedIN</h1> : <h1>Enter username password correctly</h1>}
         </div>
     )
 }

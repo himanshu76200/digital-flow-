@@ -3,6 +3,10 @@ input {
   padding: 10px;
 }
 
+.submit-button {
+  width: 200px;
+}
+
 .link {
   position: fixed;
   top: 50%;
