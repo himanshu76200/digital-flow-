@@ -13,6 +13,17 @@ function Signup() {
         mobile: ''
     })
 
+    const validatePassword = () => {
+        const enteredPassword = data.password;
+        if (/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(enteredPassword)) {
+            // console.log("VALID PASSWORD");
+            return true;
+        } else {
+            // console.log("INVALID PASSWORD");
+            return false;
+        }
+    }
+
     const handleChange = (event) => {
         const { name, value } = event.target;
         setData(prevData => {
@@ -26,23 +37,29 @@ function Signup() {
     const signup = async (event) => {
         event.preventDefault();
 
-        fetch('http://localhost:5000/signup', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-        })
-            .then(function (response) {
-                console.log(response.status)
-                if (response.status === 200) {
-                    setIsSignedUp(true)
-                }
+        if (validatePassword()) {
+            fetch('http://localhost:5000/signup', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
             })
+                .then(function (response) {
+                    console.log(response.status)
+                    if (response.status === 200) {
+                        setIsSignedUp(true)
+                    }
+                })
 
-        console.log(JSON.stringify(data))
-        console.log(isSignedUp)
+            console.log(JSON.stringify(data))
+            console.log(isSignedUp)
+        } else {
+            console.log("INVALID PASSWORD")
+        }
+
+
 
     }
 
@@ -71,6 +88,7 @@ function Signup() {
                 <input class="submit-button" type="submit" />
             </form>
             {isSignedUp ? <h1>successfully signed up</h1> : <h1>Username or email alredy exits</h1>}
+
         </div>
     )
 }
